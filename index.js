@@ -3,6 +3,7 @@ var cors = require('cors');
 require('dotenv').config()
 const bodyParser = require("body-parser");
 const multer = require("multer");
+let upload = multer({dest:"uploads/"});
 
 var app = express();
 
@@ -14,6 +15,9 @@ app.get('/', function (req, res) {
 });
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.post('/api/fileanalyse', upload.single('upfile'), (req, res) => { 
+ res.json({name: req.file.filename, type: req.file.mimetype, size: req.file.size})
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, function () {
